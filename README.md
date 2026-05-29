@@ -23,7 +23,7 @@ A public transaction dataset is also published here:
 https://storage.googleapis.com/tibson-public
 ```
 
-Useful files:
+Includes the following files:
 
 - `metadata.json` - dataset stats and file listing
 - `schema.json` - column definitions, dtypes, examples, and Python quickstart
