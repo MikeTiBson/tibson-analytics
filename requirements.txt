@@ -1,0 +1,6 @@
+pandas
+requests
+pyarrow
+gcsfs
+streamlit
+plotly

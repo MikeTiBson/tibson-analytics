@@ -1,0 +1,84 @@
+{
+  "notes": {
+    "endpoints": {
+      "dexscreener_search": "https://api.dexscreener.com/latest/dex/search?q=tibbir"
+    }
+  },
+  "watchlist": {
+    "0x9d354a652a64c30ca0c72c320ec55436f486f0a1": {
+      "label": "Unknown Contract",
+      "type": "contract",
+      "notes": {
+        "description": "Fixed-size deposits (e.g. 50k) and delayed 1:1 withdrawals. Likely vesting / token lock mechanism.",
+        "other": ""
+      },
+      "confidence": 0.7
+    }
+  },
+  "confirmed": {
+    "0x80a8F11201Bc1962D0Dfff0a5B9C49B14bb2b7c2": {
+      "label": "Dev",
+      "type": "team",
+      "entity": "tibbir",
+      "notes": {
+        "other": ""
+      },
+      "confidence": 1.0
+    },
+    "0x4e3ae00E8323558fA5Cac04b152238924AA31B60": {
+      "label": "MEXC 15",
+      "type": "exchange",
+      "entity": "MEXC",
+      "notes": {
+        "other": ""
+      },
+      "confidence": 0.9
+    },
+    "0x6fF5693b99212Da76ad316178A184AB56D299b43": {
+      "label": "Uniswap V4 Universal Router",
+      "type": "router",
+      "entity": "uniswap",
+      "chain": "base",
+      "notes": {
+        "other": ""
+      },
+      "confidence": 1.0
+    },
+    "0x0c3b466104545efa096b8f944c1e524e1d0d4888": {
+      "label": "TIBBIR/VIRTUAL LP",
+      "type": "lp",
+      "dex": "uniswap_v2",
+      "chain": "base",
+      "pair": "TIBBIR/VIRTUAL",
+      "liquidity_usd": 2955886,
+      "notes": {
+        "other": ""
+      },
+      "confidence": 1.0
+    },
+    "0x0E4409F7a8ebA3213F336daf608985302e79328c": {
+      "label": "TIBBIR/WETH LP",
+      "type": "lp",
+      "dex": "aerodrome",
+      "chain": "base",
+      "pair": "TIBBIR/WETH",
+      "liquidity_usd": 213964,
+      "notes": {
+        "other": ""
+      },
+      "confidence": 0.95
+    },
+    "0x0f664afFB82f074937D5cFCD61b97F3F32d5dC50": {
+      "label": "TIBBIR/WETH LP",
+      "type": "lp",
+      "dex": "aerodrome",
+      "chain": "base",
+      "pair": "TIBBIR/WETH",
+      "liquidity_usd": 171846,
+      "notes": {
+        "other": ""
+      },
+      "confidence": 0.95
+    }
+  }
+}

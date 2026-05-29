@@ -1,0 +1,388 @@
+{
+  "events": [
+    {
+      "date": "2025-01-11",
+      "chart_date": "2025-01-12",
+      "time_utc": "2025-01-11 20:14:47 UTC",
+      "title": "mickym.eth funds deployer address",
+      "tier": "major",
+      "section": "key",
+      "group": "Launch",
+      "detail": "mickym.eth funds the deployer address shortly before launch.",
+      "links": [
+        {
+          "label": "Etherscan tx",
+          "url": "https://etherscan.io/tx/0x286a702630239ff9b002c41f502076d1ce48a6e026951c3d22ff9b0e86cca2e3"
+        }
+      ]
+    },
+    {
+      "date": "2025-01-11",
+      "chart_date": "2025-01-12",
+      "time_utc": "2025-01-11 20:25:21 UTC",
+      "title": "Deployer address launches TIBBIR",
+      "tier": "major",
+      "section": "key",
+      "group": "Launch",
+      "detail": "The deployer address launches TIBBIR on Base.",
+      "links": [
+        {
+          "label": "BaseScan tx",
+          "url": "https://basescan.org/tx/0x2eaed73b2744fbd9a9a511755e66cf7b46d5d0639c853d870942fd51874ace6d"
+        }
+      ]
+    },
+    {
+      "date": "2025-01-11",
+      "chart_date": "2025-01-12",
+      "time_utc": "2025-01-11 22:18:00 UTC",
+      "title": "Public call from a sniper aping TIBBIR",
+      "tier": "major",
+      "section": "key",
+      "group": "Launch",
+      "detail": "Launch-window public call from Crypto_Nolt.",
+      "links": [
+        {
+          "label": "X post",
+          "url": "https://x.com/Crypto_Nolt/status/1878189832582631688"
+        }
+      ]
+    },
+    {
+      "date": "2025-01-12",
+      "time_utc": "2025-01-12 16:49:00 UTC",
+      "title": "Altcoinist amplification - True if big",
+      "tier": "major",
+      "section": "key",
+      "group": "Launch",
+      "detail": "Early Altcoinist amplification from the first full day of the pool.",
+      "links": [
+        {
+          "label": "X post",
+          "url": "https://x.com/Altcoinist/status/1878469374547288482"
+        }
+      ]
+    },
+    {
+      "date": "2025-02-10",
+      "title": "Early Altcoinist thread",
+      "tier": "noteworthy",
+      "section": "key",
+      "group": "Additional context",
+      "detail": "Early Altcoinist thread that became part of the TIBBIR trail.",
+      "links": [
+        {
+          "label": "X post",
+          "url": "https://x.com/Altcoinist/status/1888966729646166394"
+        }
+      ]
+    },
+    {
+      "date": "2025-03-24",
+      "title": "Virtuals soft confirmation",
+      "tier": "noteworthy",
+      "section": "key",
+      "group": "Additional context",
+      "detail": "Community-read soft confirmation around the 'It takes money to change money' line.",
+      "links": [
+        {
+          "label": "X post",
+          "url": "https://x.com/everythingempty/status/1904128546043555854"
+        }
+      ]
+    },
+    {
+      "date": "2025-05-09",
+      "title": "Altcoinist first TIBBIR article",
+      "tier": "noteworthy",
+      "section": "key",
+      "group": "Additional context",
+      "detail": "Altcoinist publishes the first TIBBIR article.",
+      "links": [
+        {
+          "label": "X article",
+          "url": "https://x.com/Altcoinist/status/1920839379624280363"
+        }
+      ]
+    },
+    {
+      "date": "2025-07-29",
+      "title": "CryptoPunk #9098 & Soulbound NFTs",
+      "tier": "major",
+      "section": "key",
+      "group": "CryptoPunk #9098 & Soulbound NFTs",
+      "detail": "TIBBIR announces the CryptoPunk #9098 purchase and commemorative soulbound NFTs.",
+      "links": [
+        {
+          "label": "Announcement",
+          "url": "https://x.com/ribbita2012/status/1949978415747965215"
+        },
+        {
+          "label": "Purchase wallet",
+          "url": "https://etherscan.io/address/0x5663487f2f1d4fb1e2045c90af48735c8c29eecd"
+        },
+        {
+          "label": "NFT announcement",
+          "url": "https://x.com/ribbita2012/status/1949978441618714968"
+        },
+        {
+          "label": "Soulbound holders",
+          "url": "https://basescan.org/token/0xcabce1fa75aca96b40cc98dd3ab38ba332d9e488"
+        }
+      ]
+    },
+    {
+      "date": "2025-10-16",
+      "title": "Ribbit rebrand (Tibbir coded)",
+      "tier": "major",
+      "section": "key",
+      "group": "Ribbit rebrand (Tibbir coded)",
+      "detail": "Ribbit Capital rebrand context, including the public token letter and ribbit coin imagery.",
+      "links": [
+        {
+          "label": "Altcoinist thread",
+          "url": "https://x.com/Altcoinist/status/1978765132399296959"
+        },
+        {
+          "label": "Website",
+          "url": "https://www.ribbitcap.com/"
+        },
+        {
+          "label": "Ribbit coin image",
+          "url": "https://www.ribbitcap.com/ribbit-coin.png"
+        },
+        {
+          "label": "Token letter",
+          "url": "https://www.ribbitcap.com/perspective"
+        }
+      ]
+    },
+    {
+      "date": "2025-11-11",
+      "title": "Bring it on",
+      "tier": "noteworthy",
+      "section": "key",
+      "group": "Additional context",
+      "detail": "Vlad Tenev reply that became part of the TIBBIR context trail.",
+      "links": [
+        {
+          "label": "X post",
+          "url": "https://x.com/vladtenev/status/1988266732776288274"
+        }
+      ]
+    },
+    {
+      "date": "2025-12-17",
+      "title": "Ribbit videos with Tibbir easter eggs",
+      "tier": "noteworthy",
+      "section": "key",
+      "group": "Additional context",
+      "detail": "Ribbit Capital media containing TIBBIR easter eggs.",
+      "links": [
+        {
+          "label": "X post",
+          "url": "https://x.com/RibbitCapital/status/2001081091650900153"
+        }
+      ]
+    },
+    {
+      "date": "2026-01-29",
+      "title": "Ribbita.ai launch",
+      "tier": "major",
+      "section": "key",
+      "group": "Ribbita.ai launch",
+      "detail": "Ribbita.ai launches, with related Phala context plus TEE-shirt sales and burns activity.",
+      "links": [
+        {
+          "label": "Ribbita announcement",
+          "url": "https://x.com/ribbita2012/status/2016671819626057890"
+        },
+        {
+          "label": "Phala Network",
+          "url": "https://x.com/PhalaNetwork/status/2016690998181806548"
+        },
+        {
+          "label": "TEE-shirt sales + burns",
+          "url": "https://basescan.org/token/0xa4a2e2ca3fbfe21aed83471d28b6f65a233c6e00?a=0x29892a65ed93bba2fa99880014c745f6b8159cc1#transactions"
+        }
+      ]
+    },
+    {
+      "date": "2026-02-11",
+      "title": "Altcoinist - I WILL RETIRE YOU",
+      "tier": "noteworthy",
+      "section": "key",
+      "group": "Additional context",
+      "detail": "Altcoinist publishes the 'I WILL RETIRE YOU' article.",
+      "links": [
+        {
+          "label": "X article",
+          "url": "https://x.com/Altcoinist/status/2021677919811047443"
+        }
+      ]
+    },
+    {
+      "date": "2025-10-02",
+      "title": "I have no idea",
+      "tier": "lore",
+      "section": "lore",
+      "group": "Other / Misc",
+      "detail": "Micky Malka appearance with Raoul Pal, kept as lore rather than a key timeline event.",
+      "links": [
+        {
+          "label": "link",
+          "url": "https://www.youtube.com/watch?v=pdFfT8dXU7E"
+        }
+      ]
+    },
+    {
+      "date": "2025-11-24",
+      "title": "Konami",
+      "tier": "lore",
+      "section": "lore",
+      "group": "Konami",
+      "detail": "Community numerology and Konami references.",
+      "links": [
+        {
+          "label": "Lore master",
+          "url": "https://x.com/beeboopx/status/2001867397234593912"
+        },
+        {
+          "label": "Coinbase example (~30 sec mark)",
+          "url": "https://x.com/coinbase/status/2000699026644029827"
+        },
+        {
+          "label": "Ribbit Coin Image (Rebels/Reb375)",
+          "url": "https://www.ribbitcap.com/ribbit-coin.png"
+        },
+        {
+          "label": "011C",
+          "url": "https://x.com/beeboopx/status/2016668771423752671"
+        }
+      ]
+    },
+    {
+      "date": "2025-12-01",
+      "title": "Gribbits",
+      "tier": "lore",
+      "section": "lore",
+      "group": "Other / Misc",
+      "detail": "Community GRIBBITS lore.",
+      "links": [
+        {
+          "label": "link",
+          "url": "https://x.com/SPYR0_Crypto/status/1995818218091696131"
+        }
+      ]
+    },
+    {
+      "date": "2025-10-27",
+      "title": "EVER-GREEN",
+      "tier": "lore",
+      "section": "lore",
+      "group": "Beeple x Tibbir",
+      "detail": "Beeple x Tibbir art run.",
+      "links": [
+        {
+          "label": "link",
+          "url": "https://x.com/beeple/status/1982703187258908841"
+        }
+      ]
+    },
+    {
+      "date": "2025-11-01",
+      "title": "HAPPY O'WEEN DAY",
+      "tier": "lore",
+      "section": "lore",
+      "group": "Beeple x Tibbir",
+      "detail": "Beeple x Tibbir art run.",
+      "links": [
+        {
+          "label": "link",
+          "url": "https://x.com/beeple/status/1984462232252547572"
+        }
+      ]
+    },
+    {
+      "date": "2025-11-10",
+      "title": "BORN IN THE TRENCHES",
+      "tier": "lore",
+      "section": "lore",
+      "group": "Beeple x Tibbir",
+      "detail": "Beeple x Tibbir art run.",
+      "links": [
+        {
+          "label": "link",
+          "url": "https://x.com/beeple/status/1987746538500837850"
+        }
+      ]
+    },
+    {
+      "date": "2025-11-13",
+      "title": "bro can't catch a break",
+      "tier": "lore",
+      "section": "lore",
+      "group": "Beeple x Tibbir",
+      "detail": "Beeple x Tibbir art run.",
+      "links": [
+        {
+          "label": "link",
+          "url": "https://x.com/beeple/status/1988833878421786910"
+        }
+      ]
+    },
+    {
+      "date": "2025-11-24",
+      "title": "ONBOARDING NORMIES",
+      "tier": "lore",
+      "section": "lore",
+      "group": "Beeple x Tibbir",
+      "detail": "Beeple x Tibbir art run.",
+      "links": [
+        {
+          "label": "link",
+          "url": "https://x.com/beeple/status/1992820165994811793/photo/1"
+        }
+      ]
+    },
+    {
+      "date": "2026-01-25",
+      "title": "Frogfather Pilgrimage",
+      "tier": "lore",
+      "section": "lore",
+      "group": "Other / Misc",
+      "detail": "Altcoinist pilgrimage to the frogfather.",
+      "links": [
+        {
+          "label": "link",
+          "url": "https://x.com/KonstantinSebeo/status/2015030410129096904"
+        }
+      ]
+    }
+  ],
+  "zones": [
+    {
+      "start": "2025-07-22",
+      "end": "2025-11-12",
+      "title": "No dates zone",
+      "tier": "lore",
+      "section": "lore",
+      "group": "No dates zone",
+      "detail": "Frogs were intensely not speculating on a potential stealth exit date.",
+      "links": [
+        {
+          "label": "Altcoinist",
+          "url": "https://x.com/Altcoinist/status/1947741173969285614"
+        },
+        {
+          "label": "Altcoinist",
+          "url": "https://x.com/Altcoinist/status/1976596066436005889"
+        },
+        {
+          "label": "fromzerotomoon",
+          "url": "https://x.com/fromzerotomoon_/status/1986731727923155287"
+        }
+      ]
+    }
+  ]
+}

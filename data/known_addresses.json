@@ -1,0 +1,14 @@
+{
+  "0x0000000000000000000000000000000000000000": {
+    "label": "Burn (zero address)",
+    "type": "burn"
+  },
+  "0x000000000000000000000000000000000000dead": {
+    "label": "Burn (dead address)",
+    "type": "burn"
+  },
+  "0x4e3ae00e8323558fa5cac04b152238924aa31b60": {
+    "label": "MEXC 15",
+    "type": "exchange"
+  }
+}

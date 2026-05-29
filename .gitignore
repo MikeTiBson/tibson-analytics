@@ -1,0 +1,58 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+eggs/
+.eggs/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Environment
+.env
+.venv
+env/
+venv/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+.claude/
+
+# Local agent/session files
+AGENTS.md
+spec_temp.txt
+
+# Data
+*.csv
+*.parquet
+!data/
+!data/Tibbir-SoulboundNFT-0xcabce1fa75aca96b40cc98dd3ab38ba332d9e488.csv
+!examples/coin_age_example_wallet_events.csv
+
+# GCS service account keys
+*-*.json
+!tibbir_metadata.json
+
+# OS
+.DS_Store
+Thumbs.db
+Skärmbild*
+streamlit_secrets.toml
+.streamlit/
+
+# Local-only scratch
+sbx/
+engine/*.ipynb
+data/*
+!data/known_addresses.json
+!data/price_history.csv
+!data/price_context_events.json
+!data/wallet_labels.json
+!data/Tibbir-SoulboundNFT-0xcabce1fa75aca96b40cc98dd3ab38ba332d9e488.csv

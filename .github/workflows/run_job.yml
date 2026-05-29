@@ -1,0 +1,53 @@
+name: Run job
+
+on:
+  workflow_dispatch:
+    inputs:
+      job:
+        description: Job to run
+        required: true
+        type: choice
+        options:
+          - update_transfers
+          - update_holder_growth
+          - update_bucket_breakdown
+          - rebuild_holder_growth
+          - rebuild_bucket_breakdown
+          - build_wallet_snapshot
+          - build_wallet_activity
+          - rebuild_coin_age_snapshots
+          - update_coin_age_snapshots
+          - build_wallet_events
+          - build_wallet_summary
+          - build_wallet_profiler
+          - rebuild_price_history
+          - update_price_history
+          - build_soulbound_holder_supply
+          - build_chad_cohorts
+          - publish_public_dataset
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Authenticate to GCS
+        run: |
+          echo '${{ secrets.GCP_SA_KEY }}' > /tmp/gcs-key.json
+          echo "GOOGLE_APPLICATION_CREDENTIALS=/tmp/gcs-key.json" >> $GITHUB_ENV
+
+      - name: Run job
+        run: python engine/run_job.py --job ${{ inputs.job }}
+        env:
+          ALCHEMY_RPC_URL: ${{ secrets.ALCHEMY_RPC_URL }}
