@@ -67,6 +67,15 @@ Key files:
 - **Security basics**: added `requirements.in` for direct dependencies and a fully pinned generated `requirements.txt` for Streamlit/GitHub installs, added read-only `contents` permissions to GitHub Actions, and added a gitignored local security checklist for Streamlit/GitHub deployment.
 - **Docs cleanup**: removed the internal `docs/todo.md` scratch list before public deployment.
 - **Ignore-file cleanup**: simplified `.gitignore` to current public repo needs: Python/cache files, local secrets, IDE files, scratch folders, and generated bulky data (`*.parquet`, `*.ipynb`).
+- **Streamlit navigation cleanup**: changed dataset-details navigation from markdown query links to in-app buttons backed by session state, avoiding new tabs and ugly deployed `~/+/` query URLs.
+- **Mobile chart polish**: increased chart heights, shortened date ticks and price legend labels, moved legends below charts, removed legend titles, and hid Plotly modebars to reduce cramped chart rendering on mobile.
+- **Soulbound mobile polish**: removed the Soulbound chart y-axis title, increased date tick density, and changed hover to show share of supply rather than raw TIBBIR held.
+- **Holder distribution mobile polish**: removed the y-axis title and moved the current wallet count snapshot into a titled vertical bar chart after the wallet-count history section.
+- **Holder growth mobile polish**: renamed the section to Wallet count (per bucket), removed the y-axis title, and increased date tick density for the chart.
+- **Chart date axes**: reverted forced mobile date tick formatting so Plotly can use its normal date labels across time-series charts.
+- **Chart legend readability**: increased shared bottom legend label size across charts that use the common Plotly legend helper.
+- **Wallet count structure**: reordered the post-Soulbound sections to show current wallet count first, followed by wallet-count history and holder-distribution history, and added a short explanatory card for what wallet count means.
+- **Holder distribution snapshot**: added a current holder distribution bar chart with an explanatory caption before the holder-distribution history chart.
 
 ### 2026-05-25
 

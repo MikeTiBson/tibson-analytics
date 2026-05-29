@@ -44,6 +44,38 @@ st.title("tibson analytics")
 if _TIBSON_IMAGE.exists():
     st.image(str(_TIBSON_IMAGE), width=96)
 
+st.markdown(
+    """
+    <style>
+      div.stButton button[data-testid="stBaseButton-tertiary"],
+      div.stButton button[kind="tertiary"] {
+        background: transparent !important;
+        border: 0 !important;
+        color: #38bdf8 !important;
+        padding: 0 !important;
+        min-height: auto !important;
+        text-decoration: underline !important;
+        box-shadow: none !important;
+      }
+      div.stButton button[data-testid="stBaseButton-tertiary"] *,
+      div.stButton button[kind="tertiary"] * {
+        color: #38bdf8 !important;
+        text-decoration: underline !important;
+      }
+      div.stButton button[data-testid="stBaseButton-tertiary"]:hover,
+      div.stButton button[kind="tertiary"]:hover {
+        color: #7dd3fc !important;
+      }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+if st.query_params.get("page") == "dataset-details":
+    st.session_state["page"] = "dataset-details"
+    del st.query_params["page"]
+    st.rerun()
+
 IS_COIN_AGE_EXAMPLE = st.query_params.get("page") == "coin-age-example"
 
 
@@ -63,6 +95,24 @@ _BASESCAN  = "https://basescan.org"
 DATA_DIR = Path(__file__).parent / "data"
 PRICE_CONTEXT_FILE = DATA_DIR / "price_context_events.json"
 PRICE_HISTORY_CSV_FILE = DATA_DIR / "price_history.csv"
+PLOTLY_CONFIG = {"displayModeBar": False, "responsive": True}
+CHART_HEIGHT = 480
+
+
+def _date_xaxis():
+    return dict(title=None)
+
+
+def _bottom_legend():
+    return dict(
+        title=None,
+        orientation="h",
+        yanchor="top",
+        y=-0.20,
+        xanchor="left",
+        x=0,
+        font=dict(size=13),
+    )
 
 
 @st.cache_data
@@ -309,7 +359,7 @@ if meta:
     _supply      = meta.get("total_minted_supply")
     _burned_zero = meta.get("burned_supply", 0)
     _burned_dead = meta.get("dead_address_supply", 0)
-    _is_dataset_details_page = st.query_params.get("page") == "dataset-details"
+    _is_dataset_details_page = st.session_state.get("page", "dashboard") == "dataset-details"
 
     def _render_contract_supply_details():
         c1, c2 = st.columns(2)
@@ -340,7 +390,9 @@ if meta:
         c2.markdown(f'<p style="{_lbl}">Initial supply − (burns + dead)</p><p style="{_val}">{f"{_supply - _burned_zero - _burned_dead:,.0f}" if _supply is not None else "—"}</p>', unsafe_allow_html=True)
 
     def _render_dataset_details_page():
-        st.markdown("[Back to dashboard](?)")
+        if st.button("Back to dashboard", key="back_to_dashboard", type="tertiary"):
+            st.session_state["page"] = "dashboard"
+            st.rerun()
 
         st.subheader("Contract & Supply")
         _render_contract_supply_details()
@@ -405,7 +457,9 @@ if meta:
             """
         )
 
-        st.markdown("[Read more details about data coverage](?page=dataset-details)")
+        if st.button("Read more details about data coverage", key="open_dataset_details", type="tertiary"):
+            st.session_state["page"] = "dataset-details"
+            st.rerun()
 
 # --- cached loaders (defined once, used across sections) ---
 
@@ -699,7 +753,7 @@ def render_raw_data():
             except Exception as e:
                 st.warning(f"Could not load transfers: {e}")
 
-if st.query_params.get("page") == "dataset-details":
+if st.session_state.get("page", "dashboard") == "dataset-details":
     _render_dataset_details_page()
     st.stop()
 
@@ -733,7 +787,7 @@ try:
     fig_price.add_trace(go.Scatter(
         x=p_window["date"],
         y=p_window["price_usd"],
-        name="TIBBIR",
+        name="Price",
         mode="lines",
         line=dict(width=2, color="#22d3ee"),
         hovertemplate="%{x|%b %d, %Y}<br>$%{y:.6f}<extra>TIBBIR</extra>",
@@ -773,7 +827,7 @@ try:
                 )
             for tier, name, color, size in [
                 ("major", "Major events", "#34d399", 20),
-                ("noteworthy", "Other key events", "#fbbf24", 15),
+                ("noteworthy", "Other", "#fbbf24", 15),
             ]:
                 tier_df = grouped_df[grouped_df["tier"] == tier]
                 if tier_df.empty:
@@ -796,15 +850,16 @@ try:
                 ))
 
     fig_price.update_layout(
-        yaxis=dict(title="USD"),
-        xaxis=dict(title=None),
+        yaxis=dict(title=None, tickprefix="$", tickformat=".2f"),
+        xaxis=_date_xaxis(),
         hovermode="closest",
         hoverdistance=30,
         spikedistance=30,
-        margin=dict(t=20, b=20, l=0, r=0),
-        height=320,
+        legend=_bottom_legend(),
+        margin=dict(t=16, b=90, l=0, r=0),
+        height=CHART_HEIGHT,
     )
-    st.plotly_chart(fig_price, use_container_width=True)
+    st.plotly_chart(fig_price, use_container_width=True, config=PLOTLY_CONFIG)
     st.markdown("<div style='height:0.75rem'></div>", unsafe_allow_html=True)
     if price_context != "Off":
         visible_zones = [
@@ -816,7 +871,7 @@ try:
             and pd.to_datetime(zone["start"]) <= p_window["date"].max()
         ]
         if visible_zones or visible_price_events:
-            with st.expander("Price context details", expanded=True):
+            with st.expander("Price context details", expanded=False):
                 if price_context == "Bonus lore":
                     _render_lore_price_context(visible_zones, visible_price_events)
                 elif visible_price_events:
@@ -831,8 +886,9 @@ st.markdown(
       <div style="display:flex; flex-wrap:wrap; gap:0.6rem">
         <a href="#jump-chad-wallets" style="padding:0.42rem 0.7rem; border:1px solid rgba(250,250,250,0.16); border-radius:6px; text-decoration:none">Chad wallets</a>
         <a href="#jump-soulbound-wallets" style="padding:0.42rem 0.7rem; border:1px solid rgba(250,250,250,0.16); border-radius:6px; text-decoration:none">Soulbound wallets</a>
+        <a href="#jump-current-wallet-count" style="padding:0.42rem 0.7rem; border:1px solid rgba(250,250,250,0.16); border-radius:6px; text-decoration:none">Current wallet count</a>
+        <a href="#jump-holder-growth" style="padding:0.42rem 0.7rem; border:1px solid rgba(250,250,250,0.16); border-radius:6px; text-decoration:none">Wallet count history</a>
         <a href="#jump-holder-distribution" style="padding:0.42rem 0.7rem; border:1px solid rgba(250,250,250,0.16); border-radius:6px; text-decoration:none">Holder distribution</a>
-        <a href="#jump-holder-growth" style="padding:0.42rem 0.7rem; border:1px solid rgba(250,250,250,0.16); border-radius:6px; text-decoration:none">Holder growth</a>
       </div>
     </div>
     """,
@@ -928,14 +984,14 @@ try:
             font=dict(size=11, color="#fbbf24"),
         )
     fig_chads.update_layout(
-        yaxis=dict(title="TIBBIR held"),
-        xaxis=dict(title=None),
+        yaxis=dict(title=None),
+        xaxis=_date_xaxis(),
         hovermode="x unified",
-        legend=dict(title="Current chad cohort", orientation="h", yanchor="bottom", y=1.02, xanchor="left", x=0),
-        margin=dict(t=40, b=20, l=0, r=0),
-        height=320,
+        legend=_bottom_legend(),
+        margin=dict(t=28, b=90, l=0, r=0),
+        height=CHART_HEIGHT,
     )
-    st.plotly_chart(fig_chads, use_container_width=True)
+    st.plotly_chart(fig_chads, use_container_width=True, config=PLOTLY_CONFIG)
     st.caption("Historical holdings are grouped by each wallet's current cohort.")
     st.dataframe(
         cohort_summary[["cohort", "Wallets", "TIBBIR held", "Avg coin age", "% of peak", "Sold / bought"]]
@@ -1019,23 +1075,24 @@ try:
     fig_soulbound.add_trace(go.Scatter(
         x=s_window["date"],
         y=s_window["total_balance"],
+        customdata=s_window[["pct_total_supply"]],
         name="Soulbound wallets",
         mode="lines",
         line=dict(width=2, color="#34d399"),
         fill="tozeroy",
         fillcolor="rgba(52,211,153,0.28)",
-        hovertemplate="%{x|%b %d, %Y}<br>%{y:,.0f} TIBBIR<extra>Soulbound wallets</extra>",
+        hovertemplate="%{x|%b %d, %Y}<br>%{customdata[0]:.2f}% of supply<extra>Soulbound wallets</extra>",
     ))
 
     fig_soulbound.update_layout(
-        yaxis=dict(title="TIBBIR held"),
-        xaxis=dict(title=None),
+        yaxis=dict(title=None),
+        xaxis=_date_xaxis(),
         hovermode="x unified",
         showlegend=False,
-        margin=dict(t=40, b=20, l=0, r=0),
-        height=320,
+        margin=dict(t=16, b=56, l=0, r=0),
+        height=CHART_HEIGHT,
     )
-    st.plotly_chart(fig_soulbound, use_container_width=True)
+    st.plotly_chart(fig_soulbound, use_container_width=True, config=PLOTLY_CONFIG)
     st.caption("Current TIBBIR held by addresses with a soulbound NFT.")
 
     with st.expander("Wallet verification"):
@@ -1075,10 +1132,6 @@ except Exception as e:
 
 st.divider()
 
-# --- Holder distribution ---
-st.markdown('<div id="jump-holder-distribution" style="scroll-margin-top:5rem"></div>', unsafe_allow_html=True)
-st.subheader("Holder distribution")
-
 BUCKETS = [
     ("pct_1m_plus",    "count_1m_plus",    "1M+"),
     ("pct_100k_1m",    "count_100k_1m",    "100k–1M"),
@@ -1086,51 +1139,59 @@ BUCKETS = [
     ("pct_1k_10k",     "count_1k_10k",     "1k–10k"),
     ("pct_0_1k",       "count_0_1k",       "0–1k"),
 ]
+BUCKET_COLORS = ["#6366f1", "#22d3ee", "#34d399", "#fbbf24", "#f87171"]
+
+# --- Current wallet count ---
+st.markdown('<div id="jump-current-wallet-count" style="scroll-margin-top:5rem"></div>', unsafe_allow_html=True)
+st.subheader("Current wallet count per bucket")
 
 try:
-    bdf = load_bucket_breakdown()
-    bdf["date"] = pd.to_datetime(bdf["date"])
+    bdf_counts = load_bucket_breakdown()
+    bdf_counts["date"] = pd.to_datetime(bdf_counts["date"])
+    latest_counts = bdf_counts.loc[bdf_counts["date"].idxmax()]
+    total_wallet_count = int(sum(latest_counts[count_col] for _, count_col, _ in BUCKETS))
 
-    latest = bdf.loc[bdf["date"].idxmax()]
-
-    window = bdf.sort_values("date")
-
-    fig = go.Figure()
-    colors = ["#6366f1", "#22d3ee", "#34d399", "#fbbf24", "#f87171"]
-    for (pct_col, _, label), color in zip(BUCKETS, colors):
-        fig.add_trace(go.Scatter(
-            x=window["date"],
-            y=window[pct_col],
-            name=label,
-            stackgroup="one",
-            line=dict(width=0.5, color=color),
-            fillcolor=color,
-            hovertemplate="%{y:.1f}%<extra>" + label + "</extra>",
-        ))
-
-    fig.update_layout(
-        yaxis=dict(title="% of supply", range=[0, 100]),
-        xaxis=dict(title=None),
-        hovermode="x unified",
-        legend=dict(title="Wallet size (Tibbir balance)", orientation="h", yanchor="bottom", y=1.02, xanchor="left", x=0),
-        margin=dict(t=40, b=20, l=0, r=0),
-        height=320,
+    st.markdown(
+        f"""
+        <div style="border:1px solid rgba(250,250,250,0.14); border-radius:8px; padding:0.9rem 1rem; margin:0.25rem 0 1rem">
+          <div style="font-size:0.88rem; font-weight:700; color:rgba(250,250,250,0.82)">Wallet count</div>
+          <div style="font-size:2rem; line-height:1.15; margin:0.1rem 0">{total_wallet_count:,}</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
     )
-    st.plotly_chart(fig, use_container_width=True)
 
-    st.caption("Current wallet count per bucket")
-    cols = st.columns(5)
-    for col, (pct_col, count_col, label) in zip(cols, BUCKETS):
-        col.markdown(f"**{label}**  \n{int(latest[count_col]):,}")
+    current_counts = pd.DataFrame([
+        {"Bucket": label, "Wallets": int(latest_counts[count_col]), "Color": color}
+        for (_, count_col, label), color in zip(BUCKETS, BUCKET_COLORS)
+    ])
+    fig_counts = go.Figure(go.Bar(
+        x=current_counts["Bucket"],
+        y=current_counts["Wallets"],
+        marker=dict(color=current_counts["Color"]),
+        text=current_counts["Wallets"].map(lambda v: f"{v:,}"),
+        textposition="outside",
+        textfont=dict(color="#f8fafc", size=12),
+        hovertemplate="%{x}<br>%{y:,} wallets<extra></extra>",
+    ))
+    fig_counts.update_layout(
+        xaxis=dict(title=None),
+        yaxis=dict(title=None, showgrid=True),
+        margin=dict(t=16, b=20, l=0, r=0),
+        height=320,
+        showlegend=False,
+    )
+    st.plotly_chart(fig_counts, use_container_width=True, config=PLOTLY_CONFIG)
+    st.caption("Addresses with a current TIBBIR balance, grouped by wallet size.")
 
 except Exception as e:
-    st.warning(f"Could not load holder distribution: {e}")
+    st.warning(f"Could not load current wallet counts: {e}")
 
 st.divider()
 
 # --- Holder growth ---
 st.markdown('<div id="jump-holder-growth" style="scroll-margin-top:5rem"></div>', unsafe_allow_html=True)
-st.subheader("Holder growth")
+st.subheader("Wallet count (with history)")
 
 GROWTH_BUCKETS = [
     ("count_1m_plus",    "1M+"),
@@ -1178,14 +1239,78 @@ try:
         ))
 
     fig2.update_layout(
-        yaxis=dict(title="Wallets"),
-        xaxis=dict(title=None),
+        yaxis=dict(title=None),
+        xaxis=_date_xaxis(),
         hovermode="x unified",
-        legend=dict(title="Wallet size (Tibbir balance)", orientation="h", yanchor="bottom", y=1.02, xanchor="left", x=0),
-        margin=dict(t=40, b=20, l=0, r=0),
-        height=320,
+        legend=_bottom_legend(),
+        margin=dict(t=28, b=90, l=0, r=0),
+        height=CHART_HEIGHT,
     )
-    st.plotly_chart(fig2, use_container_width=True)
+    st.plotly_chart(fig2, use_container_width=True, config=PLOTLY_CONFIG)
 
 except Exception as e:
     st.warning(f"Could not load holder growth: {e}")
+
+st.divider()
+
+# --- Holder distribution ---
+st.markdown('<div id="jump-holder-distribution" style="scroll-margin-top:5rem"></div>', unsafe_allow_html=True)
+st.subheader("Current holder distribution")
+
+try:
+    bdf = load_bucket_breakdown()
+    bdf["date"] = pd.to_datetime(bdf["date"])
+    latest_distribution = bdf.loc[bdf["date"].idxmax()]
+
+    current_distribution = pd.DataFrame([
+        {"Bucket": label, "Supply": float(latest_distribution[pct_col]), "Color": color}
+        for (pct_col, _, label), color in zip(BUCKETS, BUCKET_COLORS)
+    ])
+    fig_current_distribution = go.Figure(go.Bar(
+        x=current_distribution["Bucket"],
+        y=current_distribution["Supply"],
+        marker=dict(color=current_distribution["Color"]),
+        text=current_distribution["Supply"].map(lambda v: f"{v:.1f}%"),
+        textposition="outside",
+        textfont=dict(color="#f8fafc", size=12),
+        hovertemplate="%{x}<br>%{y:.1f}% of supply<extra></extra>",
+    ))
+    fig_current_distribution.update_layout(
+        xaxis=dict(title=None),
+        yaxis=dict(title=None, range=[0, 100], ticksuffix="%"),
+        margin=dict(t=16, b=20, l=0, r=0),
+        height=320,
+        showlegend=False,
+    )
+    st.plotly_chart(fig_current_distribution, use_container_width=True, config=PLOTLY_CONFIG)
+    st.caption("Share of current TIBBIR supply held by wallets in each balance bucket.")
+
+    st.divider()
+    st.subheader("Holder distribution (with history)")
+
+    window = bdf.sort_values("date")
+
+    fig = go.Figure()
+    for (pct_col, _, label), color in zip(BUCKETS, BUCKET_COLORS):
+        fig.add_trace(go.Scatter(
+            x=window["date"],
+            y=window[pct_col],
+            name=label,
+            stackgroup="one",
+            line=dict(width=0.5, color=color),
+            fillcolor=color,
+            hovertemplate="%{y:.1f}%<extra>" + label + "</extra>",
+        ))
+
+    fig.update_layout(
+        yaxis=dict(title=None, range=[0, 100]),
+        xaxis=_date_xaxis(),
+        hovermode="x unified",
+        legend=_bottom_legend(),
+        margin=dict(t=28, b=90, l=0, r=0),
+        height=CHART_HEIGHT,
+    )
+    st.plotly_chart(fig, use_container_width=True, config=PLOTLY_CONFIG)
+
+except Exception as e:
+    st.warning(f"Could not load holder distribution: {e}")
