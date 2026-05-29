@@ -95,7 +95,30 @@ _BASESCAN  = "https://basescan.org"
 DATA_DIR = Path(__file__).parent / "data"
 PRICE_CONTEXT_FILE = DATA_DIR / "price_context_events.json"
 PRICE_HISTORY_CSV_FILE = DATA_DIR / "price_history.csv"
-PLOTLY_CONFIG = {"displayModeBar": False, "responsive": True}
+PLOTLY_CONFIG = {
+    "displayModeBar": True,
+    "displaylogo": False,
+    "doubleClick": False,
+    "modeBarButtonsToRemove": [
+        "autoScale2d",
+        "lasso2d",
+        "pan2d",
+        "resetScale2d",
+        "select2d",
+        "zoom2d",
+        "zoomIn2d",
+        "zoomOut2d",
+    ],
+    "responsive": True,
+    "scrollZoom": False,
+    "toImageButtonOptions": {
+        "format": "png",
+        "filename": "tibson-analytics-chart",
+        "height": 720,
+        "scale": 2,
+        "width": 1280,
+    },
+}
 CHART_HEIGHT = 480
 
 
@@ -113,6 +136,11 @@ def _bottom_legend():
         x=0,
         font=dict(size=13),
     )
+
+
+def _make_chart_scroll_safe(fig):
+    fig.update_layout(dragmode=False)
+    return fig
 
 
 @st.cache_data
@@ -868,7 +896,7 @@ try:
         margin=dict(t=16, b=90, l=0, r=0),
         height=CHART_HEIGHT,
     )
-    st.plotly_chart(fig_price, use_container_width=True, config=PLOTLY_CONFIG)
+    st.plotly_chart(_make_chart_scroll_safe(fig_price), use_container_width=True, config=PLOTLY_CONFIG)
     st.markdown("<div style='height:0.75rem'></div>", unsafe_allow_html=True)
     if price_context != "Off":
         visible_zones = [
@@ -899,6 +927,7 @@ st.markdown(
         <a href="#jump-holder-growth" style="padding:0.42rem 0.7rem; border:1px solid rgba(250,250,250,0.16); border-radius:6px; text-decoration:none">Wallet count history</a>
         <a href="#jump-current-holder-distribution" style="padding:0.42rem 0.7rem; border:1px solid rgba(250,250,250,0.16); border-radius:6px; text-decoration:none">Current holder distribution</a>
         <a href="#jump-holder-distribution-history" style="padding:0.42rem 0.7rem; border:1px solid rgba(250,250,250,0.16); border-radius:6px; text-decoration:none">Holder distribution history</a>
+        <a href="#jump-wallets-vs-supply" style="padding:0.42rem 0.7rem; border:1px solid rgba(250,250,250,0.16); border-radius:6px; text-decoration:none">Wallets vs supply</a>
       </div>
     </div>
     """,
@@ -1001,7 +1030,7 @@ try:
         margin=dict(t=28, b=90, l=0, r=0),
         height=CHART_HEIGHT,
     )
-    st.plotly_chart(fig_chads, use_container_width=True, config=PLOTLY_CONFIG)
+    st.plotly_chart(_make_chart_scroll_safe(fig_chads), use_container_width=True, config=PLOTLY_CONFIG)
     st.caption("Historical holdings are grouped by each wallet's current cohort.")
     st.dataframe(
         cohort_summary[["cohort", "Wallets", "TIBBIR held", "Avg coin age", "% of peak", "Sold / bought"]]
@@ -1102,7 +1131,7 @@ try:
         margin=dict(t=16, b=56, l=0, r=0),
         height=CHART_HEIGHT,
     )
-    st.plotly_chart(fig_soulbound, use_container_width=True, config=PLOTLY_CONFIG)
+    st.plotly_chart(_make_chart_scroll_safe(fig_soulbound), use_container_width=True, config=PLOTLY_CONFIG)
     st.caption("Current TIBBIR held by addresses with a soulbound NFT.")
 
     with st.expander("Wallet verification"):
@@ -1191,7 +1220,7 @@ try:
         height=320,
         showlegend=False,
     )
-    st.plotly_chart(fig_counts, use_container_width=True, config=PLOTLY_CONFIG)
+    st.plotly_chart(_make_chart_scroll_safe(fig_counts), use_container_width=True, config=PLOTLY_CONFIG)
     st.caption("Addresses with a current TIBBIR balance, grouped by wallet size.")
 
 except Exception as e:
@@ -1256,7 +1285,7 @@ try:
         margin=dict(t=28, b=90, l=0, r=0),
         height=CHART_HEIGHT,
     )
-    st.plotly_chart(fig2, use_container_width=True, config=PLOTLY_CONFIG)
+    st.plotly_chart(_make_chart_scroll_safe(fig2), use_container_width=True, config=PLOTLY_CONFIG)
 
 except Exception as e:
     st.warning(f"Could not load holder growth: {e}")
@@ -1292,7 +1321,7 @@ try:
         height=320,
         showlegend=False,
     )
-    st.plotly_chart(fig_current_distribution, use_container_width=True, config=PLOTLY_CONFIG)
+    st.plotly_chart(_make_chart_scroll_safe(fig_current_distribution), use_container_width=True, config=PLOTLY_CONFIG)
     st.caption("Share of current TIBBIR supply held by wallets in each balance bucket.")
 
     st.divider()
@@ -1321,7 +1350,59 @@ try:
         margin=dict(t=28, b=90, l=0, r=0),
         height=CHART_HEIGHT,
     )
-    st.plotly_chart(fig, use_container_width=True, config=PLOTLY_CONFIG)
+    st.plotly_chart(_make_chart_scroll_safe(fig), use_container_width=True, config=PLOTLY_CONFIG)
 
 except Exception as e:
     st.warning(f"Could not load holder distribution: {e}")
+
+st.divider()
+
+# --- Wallets vs supply ---
+st.markdown('<div id="jump-wallets-vs-supply" style="scroll-margin-top:5rem"></div>', unsafe_allow_html=True)
+st.subheader("Wallets vs supply by bucket")
+
+try:
+    bdf_current_holders = load_bucket_breakdown()
+    bdf_current_holders["date"] = pd.to_datetime(bdf_current_holders["date"])
+    latest_current_holders = bdf_current_holders.loc[bdf_current_holders["date"].idxmax()]
+    total_current_wallets = int(sum(latest_current_holders[count_col] for _, count_col, _ in BUCKETS))
+
+    current_holders = pd.DataFrame([
+        {
+            "Bucket": label,
+            "Wallets": int(latest_current_holders[count_col]),
+            "% of wallets": (
+                int(latest_current_holders[count_col]) / total_current_wallets * 100
+                if total_current_wallets
+                else 0
+            ),
+            "% of supply": float(latest_current_holders[pct_col]),
+        }
+        for pct_col, count_col, label in BUCKETS
+    ])
+
+    st.dataframe(
+        current_holders,
+        hide_index=True,
+        use_container_width=True,
+        column_config={
+            "Bucket": st.column_config.TextColumn("Bucket", width="small"),
+            "Wallets": st.column_config.NumberColumn("Wallets", format="%d"),
+            "% of wallets": st.column_config.ProgressColumn(
+                "% of wallets",
+                format="%.1f%%",
+                min_value=0,
+                max_value=100,
+            ),
+            "% of supply": st.column_config.ProgressColumn(
+                "% of supply",
+                format="%.1f%%",
+                min_value=0,
+                max_value=100,
+            ),
+        },
+    )
+    st.caption("Current wallet count and supply share shown side by side for each balance bucket.")
+
+except Exception as e:
+    st.warning(f"Could not load wallets vs supply by bucket: {e}")

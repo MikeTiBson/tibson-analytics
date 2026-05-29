@@ -78,6 +78,9 @@ Key files:
 - **Holder distribution snapshot**: added a current holder distribution bar chart with an explanatory caption before the holder-distribution history chart.
 - **Explore links**: split holder distribution navigation into separate current snapshot and history links.
 - **Launch price marker**: moved the launch event marker to January 11, 2025 and added a zero-price chart anchor so the label matches the launch date while avoiding an implied exact launch price.
+- **Mobile scroll behavior**: disabled Plotly scroll, double-click, and drag zoom gestures across dashboard charts so mobile page scrolling is less likely to get trapped inside a chart.
+- **Chart export controls**: restored the Plotly modebar without zoom/pan/select controls, keeping image download available while preserving scroll-safe chart behavior.
+- **Wallets vs supply summary**: moved the combined current table to the end of the holder section and renamed it to Wallets vs supply by bucket.
 
 ### 2026-05-25
 
