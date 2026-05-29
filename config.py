@@ -1,9 +1,5 @@
 import os
 
-ALCHEMY_RPC_URL = os.environ.get("ALCHEMY_RPC_URL", "")
-ALCHEMY_API_KEY = ALCHEMY_RPC_URL.rstrip("/").split("/")[-1]
-ALCHEMY_PRICES_URL = f"https://api.g.alchemy.com/prices/v1/{ALCHEMY_API_KEY}"
-
 CONTRACT_ADDRESS = "0xa4a2e2ca3fbfe21aed83471d28b6f65a233c6e00".lower()
 
 CHAIN = "base"

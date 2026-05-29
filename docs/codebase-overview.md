@@ -61,6 +61,7 @@ Key files:
 - **Dataset details layout**: moved the last-updated and latest-block cards into the wallet balance/latest transaction verification expander so the snapshot timestamp stays near the data being inspected.
 - **Landing page intro**: removed the redundant `Dataset` subheader from the top dashboard intro.
 - **Public repo cleanup**: removed the optional `.devcontainer` Codespaces setup, one-time `backfill/` notebooks/state files, and the old wallet-classification prototype GitHub workflow/script before public Streamlit deployment.
+- **Secret loading cleanup**: moved Alchemy RPC/API-key environment loading out of shared `config.py` and into `engine/update.py`, so the Streamlit dashboard import path does not touch Alchemy configuration.
 
 ### 2026-05-25
 

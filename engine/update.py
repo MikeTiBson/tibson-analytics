@@ -1,6 +1,7 @@
 import requests
 import pandas as pd
 import json
+import os
 import time
 from datetime import datetime, timedelta, timezone
 
@@ -100,6 +101,18 @@ def _load_chad_known_addresses():
 # RPC HELPERS
 # =====================================================
 
+def _alchemy_rpc_url():
+    url = os.environ.get("ALCHEMY_RPC_URL", "").strip()
+    if not url:
+        raise RuntimeError("ALCHEMY_RPC_URL is required for pipeline jobs that fetch Alchemy data.")
+    return url
+
+
+def _alchemy_prices_url():
+    api_key = _alchemy_rpc_url().rstrip("/").split("/")[-1]
+    return f"https://api.g.alchemy.com/prices/v1/{api_key}"
+
+
 def _rpc_call(method, params=None):
     payload = {
         "jsonrpc": "2.0",
@@ -107,7 +120,7 @@ def _rpc_call(method, params=None):
         "method": method,
         "params": params or []
     }
-    r = requests.post(config.ALCHEMY_RPC_URL, json=payload)
+    r = requests.post(_alchemy_rpc_url(), json=payload)
     r.raise_for_status()
     data = r.json()
     if "error" in data:
@@ -192,7 +205,7 @@ def _fetch_alchemy_price_history_window(start, end, address=None, symbol=None):
         body["address"] = address or config.CONTRACT_ADDRESS
 
     r = requests.post(
-        f"{config.ALCHEMY_PRICES_URL}/tokens/historical",
+        f"{_alchemy_prices_url()}/tokens/historical",
         json=body,
         headers={"accept": "application/json", "content-type": "application/json"},
         timeout=30,
@@ -663,7 +676,7 @@ def update_transfers():
             "params": [params]
         }
 
-        r = requests.post(config.ALCHEMY_RPC_URL, json=payload)
+        r = requests.post(_alchemy_rpc_url(), json=payload)
         r.raise_for_status()
         data = r.json()
 
