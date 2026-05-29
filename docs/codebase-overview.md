@@ -87,6 +87,7 @@ Key files:
 - **Streamlit keepalive**: added a GitHub Actions workflow that pings the public Streamlit `/healthz` endpoint every 15 minutes.
 - **Dashboard cadence copy**: softened the top dashboard update copy to say transaction data updates ~hourly and price data updates daily.
 - **Chad example copy**: simplified the peak-balance explanation on the worked metric example page.
+- **Chad example copy**: shortened the time-frozen note on the worked metric example page.
 
 ### 2026-05-25
 

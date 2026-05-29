@@ -637,8 +637,7 @@ def render_coin_age_example_page():
     )
     st.markdown(
         f"""
-        This worked example is **time-frozen at {COIN_AGE_EXAMPLE_AS_OF.strftime('%Y-%m-%d %H:%M UTC')}**
-        so the numbers remain the same.
+        This worked example is **time-frozen at {COIN_AGE_EXAMPLE_AS_OF.strftime('%Y-%m-%d %H:%M UTC')}**.
         """
     )
 
