@@ -81,6 +81,7 @@ Key files:
 - **Mobile scroll behavior**: disabled Plotly scroll, double-click, and drag zoom gestures across dashboard charts so mobile page scrolling is less likely to get trapped inside a chart.
 - **Chart export controls**: restored the Plotly modebar without zoom/pan/select controls, keeping image download available while preserving scroll-safe chart behavior.
 - **Wallets vs supply summary**: moved the combined current table to the end of the holder section and renamed it to Wallets vs supply by bucket.
+- **Chart height tuning**: reduced shared chart height and current snapshot bar chart heights so mobile pages are less dominated by a single chart.
 
 ### 2026-05-25
 

@@ -119,7 +119,7 @@ PLOTLY_CONFIG = {
         "width": 1280,
     },
 }
-CHART_HEIGHT = 480
+CHART_HEIGHT = 400
 
 
 def _date_xaxis():
@@ -1217,7 +1217,7 @@ try:
         xaxis=dict(title=None),
         yaxis=dict(title=None, showgrid=True),
         margin=dict(t=16, b=20, l=0, r=0),
-        height=320,
+        height=280,
         showlegend=False,
     )
     st.plotly_chart(_make_chart_scroll_safe(fig_counts), use_container_width=True, config=PLOTLY_CONFIG)
@@ -1318,7 +1318,7 @@ try:
         xaxis=dict(title=None),
         yaxis=dict(title=None, range=[0, 100], ticksuffix="%"),
         margin=dict(t=16, b=20, l=0, r=0),
-        height=320,
+        height=280,
         showlegend=False,
     )
     st.plotly_chart(_make_chart_scroll_safe(fig_current_distribution), use_container_width=True, config=PLOTLY_CONFIG)
