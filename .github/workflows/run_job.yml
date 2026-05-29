@@ -26,6 +26,9 @@ on:
           - build_chad_cohorts
           - publish_public_dataset
 
+permissions:
+  contents: read
+
 jobs:
   run:
     runs-on: ubuntu-latest

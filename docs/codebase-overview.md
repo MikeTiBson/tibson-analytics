@@ -64,6 +64,9 @@ Key files:
 - **Secret loading cleanup**: moved Alchemy RPC/API-key environment loading out of shared `config.py` and into `engine/update.py`, so the Streamlit dashboard import path does not touch Alchemy configuration.
 - **Public dataset terminology**: changed reader-facing public dataset copy and generated metadata/schema descriptions from "transfers" to "transactions" while preserving existing parquet filenames.
 - **Public README**: added a concise public-facing `README.md` with dashboard overview, public dataset links, quickstart snippet, data notes, and a credential safety note.
+- **Security basics**: added `requirements.in` for direct dependencies and a fully pinned generated `requirements.txt` for Streamlit/GitHub installs, added read-only `contents` permissions to GitHub Actions, and added a gitignored local security checklist for Streamlit/GitHub deployment.
+- **Docs cleanup**: removed the internal `docs/todo.md` scratch list before public deployment.
+- **Ignore-file cleanup**: simplified `.gitignore` to current public repo needs: Python/cache files, local secrets, IDE files, scratch folders, and generated bulky data (`*.parquet`, `*.ipynb`).
 
 ### 2026-05-25
 
