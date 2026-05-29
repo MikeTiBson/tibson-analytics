@@ -356,12 +356,12 @@ if meta:
         with st.expander("Public dataset"):
             st.markdown(
                 f"""
-                The full transfer dataset is published to a public Google Storage bucket.
+                The full transaction dataset is published to a public Google Storage bucket.
 
                 - [Metadata]({config.PUBLIC_BASE_URL}/metadata.json): dataset stats and file listing.
                 - [Schema]({config.PUBLIC_BASE_URL}/schema.json): column definitions, dtypes, examples, and Python quickstart.
-                - [Sample transfers]({config.PUBLIC_BASE_URL}/sample_transfers.parquet): first 1,000 rows for quick inspection.
-                - [Full transfer history]({config.PUBLIC_BASE_URL}/transfers_master.parquet): complete Parquet dataset.
+                - [Sample transactions]({config.PUBLIC_BASE_URL}/sample_transfers.parquet): first 1,000 rows for quick inspection.
+                - [Full transaction history]({config.PUBLIC_BASE_URL}/transfers_master.parquet): complete Parquet dataset.
 
                 ```python
                 import requests
@@ -371,7 +371,7 @@ if meta:
                 metadata = requests.get(f"{{base}}/metadata.json").json()
                 schema = requests.get(f"{{base}}/schema.json").json()
                 sample = pd.read_parquet(f"{{base}}/sample_transfers.parquet")
-                transfers = pd.read_parquet(f"{{base}}/transfers_master.parquet")
+                transactions = pd.read_parquet(f"{{base}}/transfers_master.parquet")
                 ```
                 """
             )

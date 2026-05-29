@@ -1389,17 +1389,17 @@ def publish_public_dataset():
     fs             = _get_fs()
 
     COLUMN_SCHEMA = [
-        {"name": "event_id",         "dtype": "string",  "description": "Unique transfer identifier (Alchemy uniqueId)"},
-        {"name": "block_number",     "dtype": "int64",   "description": "Block number of the transfer"},
+        {"name": "event_id",         "dtype": "string",  "description": "Unique transaction event identifier (Alchemy uniqueId)"},
+        {"name": "block_number",     "dtype": "int64",   "description": "Block number of the transaction event"},
         {"name": "timestamp",        "dtype": "string",  "description": "ISO 8601 block timestamp (UTC)"},
         {"name": "tx_hash",          "dtype": "string",  "description": "Transaction hash"},
         {"name": "from_address",     "dtype": "string",  "description": "Sender address (lowercase hex)"},
         {"name": "to_address",       "dtype": "string",  "description": "Receiver address (lowercase hex)"},
-        {"name": "raw_amount",       "dtype": "string",  "description": "Transfer amount as 18-decimal integer string — use this for full precision arithmetic"},
+        {"name": "raw_amount",       "dtype": "string",  "description": "Transaction amount as 18-decimal integer string - use this for full precision arithmetic"},
         {"name": "decimals",         "dtype": "int64",   "description": "Token decimal places (always 18 for TIBBIR)"},
-        {"name": "amount",           "dtype": "float64", "description": "Transfer amount in TIBBIR units (raw_amount / 10^18)"},
+        {"name": "amount",           "dtype": "float64", "description": "Transaction amount in TIBBIR units (raw_amount / 10^18)"},
         {"name": "contract_address", "dtype": "string",  "description": "TIBBIR ERC-20 contract address"},
-        {"name": "category",         "dtype": "string",  "description": "Alchemy transfer category (always 'erc20')"},
+        {"name": "category",         "dtype": "string",  "description": "Alchemy transaction category (always 'erc20')"},
         {"name": "asset",            "dtype": "string",  "description": "Token symbol (TIBBIR)"},
     ]
 
@@ -1422,17 +1422,17 @@ def publish_public_dataset():
         df.head(1_000).to_parquet(f, index=False)
 
     schema = {
-        "dataset":   "TIBBIR ERC-20 Token Transfers",
+        "dataset":   "TIBBIR ERC-20 Token Transactions",
         "columns":   COLUMN_SCHEMA,
         "notes": [
             "The zero address (0x0000000000000000000000000000000000000000) appears as from_address on mint events.",
             "raw_amount is stored as a string to preserve full 18-decimal integer precision. Convert with int(raw_amount) / 10**18.",
-            "amount (float64) may lose sub-token precision on very large transfers — prefer raw_amount for exact arithmetic.",
+            "amount (float64) may lose sub-token precision on very large transactions - prefer raw_amount for exact arithmetic.",
             "Addresses are always lowercase.",
         ],
         "quickstart_python": (
             "import pandas as pd\n"
-            "df = pd.read_parquet('https://storage.googleapis.com/tibson-public/transfers_master.parquet')\n"
+            "transactions = pd.read_parquet('https://storage.googleapis.com/tibson-public/transfers_master.parquet')\n"
             "# or load the sample first:\n"
             "sample = pd.read_parquet('https://storage.googleapis.com/tibson-public/sample_transfers.parquet')"
         ),
@@ -1443,10 +1443,10 @@ def publish_public_dataset():
 
     now_utc = datetime.now(timezone.utc).isoformat()
     meta = {
-        "dataset":          "TIBBIR ERC-20 Token Transfers",
+        "dataset":          "TIBBIR ERC-20 Token Transactions",
         "description":      (
-            "Complete on-chain transfer history for the TIBBIR token on Base (EVM). "
-            "Updated hourly. Each row is one ERC-20 Transfer event."
+            "Complete on-chain transaction history for the TIBBIR token on Base (EVM). "
+            "Updated hourly. Each row is one ERC-20 transaction event."
         ),
         "chain":            config.CHAIN,
         "contract_address": config.CONTRACT_ADDRESS,
@@ -1460,12 +1460,12 @@ def publish_public_dataset():
             "transfers_master": {
                 "url":         f"{BASE_URL}/transfers_master.parquet",
                 "format":      "parquet",
-                "description": "Full transfer history — all {row_count:,} rows".replace("{row_count:,}", f"{len(df):,}"),
+                "description": "Full transaction history - all {row_count:,} rows".replace("{row_count:,}", f"{len(df):,}"),
             },
             "sample_transfers": {
                 "url":         f"{BASE_URL}/sample_transfers.parquet",
                 "format":      "parquet",
-                "description": "First 1,000 rows — quick preview without downloading the full dataset",
+                "description": "First 1,000 transaction rows - quick preview without downloading the full dataset",
             },
             "schema": {
                 "url":         f"{BASE_URL}/schema.json",

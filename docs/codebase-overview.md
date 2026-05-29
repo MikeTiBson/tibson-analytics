@@ -53,15 +53,17 @@ Key files:
 - **Repo root cleanup**: moved misc local data/config files into `data/` (`price_context_events.json`, `known_addresses.json`, `wallet_labels.json`, and the soulbound NFT holder CSV), updated app/pipeline paths, and removed the obsolete `CLAUDE.md` workflow note.
 - **Price raw inspection**: added a dataset-details expander that reads raw price rows from repo-local `data/price_history.csv` rather than storage.
 - **Dataset details copy**: changed the transaction data note into two bullets covering safe-block coverage and full transaction-history derivation for wallet balances, metrics, and charts.
-- **Public dataset link**: added a dataset-details expander with links to public metadata, schema, sample transfers, full transfer parquet, and a Python loading snippet for all files.
+- **Public dataset link**: added a dataset-details expander with links to public metadata, schema, sample transactions, full transaction parquet, and a Python loading snippet for all files.
 - **Wallet verification UI**: renamed the raw transaction inspection expander to focus on wallet balance verification and latest transactions; wallet balances are searchable and include token-specific BaseScan links.
-- **Hourly pipeline cadence**: changed the scheduled GitHub Action from every 4 hours to hourly; the app continues to read from the private bucket, and the public transfer dataset is published at the end of the same hourly run.
+- **Hourly pipeline cadence**: changed the scheduled GitHub Action from every 4 hours to hourly; the app continues to read from the private bucket, and the public transaction dataset is published at the end of the same hourly run.
 - **Dataset note copy**: removed the "Note -" prefix from the top dashboard data-source sentence.
 - **Dataset update cadence copy**: split the top dashboard data-source note into bullets clarifying that transaction data updates hourly while price data uses daily price points.
 - **Dataset details layout**: moved the last-updated and latest-block cards into the wallet balance/latest transaction verification expander so the snapshot timestamp stays near the data being inspected.
 - **Landing page intro**: removed the redundant `Dataset` subheader from the top dashboard intro.
 - **Public repo cleanup**: removed the optional `.devcontainer` Codespaces setup, one-time `backfill/` notebooks/state files, and the old wallet-classification prototype GitHub workflow/script before public Streamlit deployment.
 - **Secret loading cleanup**: moved Alchemy RPC/API-key environment loading out of shared `config.py` and into `engine/update.py`, so the Streamlit dashboard import path does not touch Alchemy configuration.
+- **Public dataset terminology**: changed reader-facing public dataset copy and generated metadata/schema descriptions from "transfers" to "transactions" while preserving existing parquet filenames.
+- **Public README**: added a concise public-facing `README.md` with dashboard overview, public dataset links, quickstart snippet, data notes, and a credential safety note.
 
 ### 2026-05-25
 
@@ -96,7 +98,7 @@ Key files:
 
 ### 2026-05-11 (session 7)
 
-- **Public dataset publishing** (`engine/update.py` `publish_public_dataset()`): writes 4 files to `gs://tibson-public` on every pipeline run — `transfers_master.parquet` (full ~3.25M row dataset), `sample_transfers.parquet` (first 1,000 rows), `schema.json` (column definitions, dtypes, example values, Python quickstart), `metadata.json` (row count, block range, last updated, file listing). Designed so an AI assistant or analyst can orient immediately from the metadata/schema URLs.
+- **Public dataset publishing** (`engine/update.py` `publish_public_dataset()`): writes 4 files to `gs://tibson-public` on every pipeline run — `transfers_master.parquet` (full transaction dataset), `sample_transfers.parquet` (first 1,000 transaction rows), `schema.json` (column definitions, dtypes, example values, Python quickstart), `metadata.json` (row count, block range, last updated, file listing). Designed so an AI assistant or analyst can orient immediately from the metadata/schema URLs.
 - **`config.py`**: added `PUBLIC_GCS_BUCKET`, `PUBLIC_GCS_PREFIX`, `PUBLIC_BASE_URL` pointing to `tibson-public`.
 - **Pipeline frequency**: `daily_update.yml` cron changed from `0 4 * * *` (once daily) to hourly; the scheduled pipeline updates private app data first and publishes the public dataset at the end of the same run.
 - **`run_job.py` + `run_job.yml`**: `publish_public_dataset` added as a manual job option.
