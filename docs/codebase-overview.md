@@ -84,7 +84,7 @@ Key files:
 - **Chart height tuning**: reduced shared chart height and current snapshot bar chart heights so mobile pages are less dominated by a single chart.
 - **Dashboard data cache**: added a 10-minute TTL to Streamlit storage-backed loaders so hourly bucket updates appear without requiring an app restart.
 - **Holder section titles**: shortened wallet-count and holder-distribution history chart titles.
-- **Streamlit keepalive**: added a GitHub Actions workflow that pings the public Streamlit app every 15 minutes.
+- **Streamlit keepalive**: added a GitHub Actions workflow that pings the public Streamlit `/healthz` endpoint every 15 minutes.
 - **Dashboard cadence copy**: softened the top dashboard update copy to say transaction data updates ~hourly and price data updates daily.
 - **Chad example copy**: simplified the peak-balance explanation on the worked metric example page.
 
