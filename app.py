@@ -77,8 +77,10 @@ if st.query_params.get("page") == "dataset-details":
     st.rerun()
 
 IS_COIN_AGE_EXAMPLE = st.query_params.get("page") == "coin-age-example"
+DATA_CACHE_TTL_SECONDS = 10 * 60
 
 
+@st.cache_data(ttl=DATA_CACHE_TTL_SECONDS)
 def load_metadata():
     try:
         return _read_json_file(config.METADATA_FILE)
@@ -480,8 +482,8 @@ if meta:
 
         st.markdown(
             """
-            - Transaction data updates hourly
-            - Price data uses daily price points
+            - Transaction data updates ~hourly
+            - Price data updates daily
             """
         )
 
@@ -491,11 +493,11 @@ if meta:
 
 # --- cached loaders (defined once, used across sections) ---
 
-@st.cache_data
+@st.cache_data(ttl=DATA_CACHE_TTL_SECONDS)
 def load_wallet_snapshot():
     return _read_parquet(config.WALLET_SNAPSHOT_FILE)
 
-@st.cache_data
+@st.cache_data(ttl=DATA_CACHE_TTL_SECONDS)
 def load_transfers_sample():
     df = _read_parquet(config.RECENT_TRANSFERS_FILE)
     df["amount"] = df["raw_amount"].apply(int) / (10 ** df["decimals"])
@@ -503,15 +505,15 @@ def load_transfers_sample():
     rest = [c for c in df.columns if c not in priority]
     return df[priority + rest].sort_values("timestamp", ascending=False).reset_index(drop=True)
 
-@st.cache_data
+@st.cache_data(ttl=DATA_CACHE_TTL_SECONDS)
 def load_holder_growth():
     return _read_parquet(config.DAILY_HOLDER_GROWTH_FILE)
 
-@st.cache_data
+@st.cache_data(ttl=DATA_CACHE_TTL_SECONDS)
 def load_bucket_breakdown():
     return _read_parquet(config.DAILY_BUCKET_BREAKDOWN_FILE)
 
-@st.cache_data
+@st.cache_data(ttl=DATA_CACHE_TTL_SECONDS)
 def load_price_history():
     return _read_parquet(config.PRICE_HISTORY_FILE)
 
@@ -520,11 +522,11 @@ def load_price_history_csv():
     df = pd.read_csv(PRICE_HISTORY_CSV_FILE)
     return df.sort_values("date").reset_index(drop=True)
 
-@st.cache_data
+@st.cache_data(ttl=DATA_CACHE_TTL_SECONDS)
 def load_soulbound_holder_supply():
     return _read_parquet(config.SOULBOUND_HOLDER_SUPPLY_FILE)
 
-@st.cache_data
+@st.cache_data(ttl=DATA_CACHE_TTL_SECONDS)
 def load_soulbound_wallets():
     holders = pd.read_csv(Path(__file__).parent / config.SOULBOUND_NFT_HOLDERS_CSV)
     holders["address"] = holders["HolderAddress"].astype(str).str.lower()
@@ -538,11 +540,11 @@ def load_soulbound_wallets():
     wallet_rows["balance"] = wallet_rows["balance"].fillna(0.0)
     return wallet_rows[["address", "nft_quantity", "pending_balance_update", "balance"]]
 
-@st.cache_data
+@st.cache_data(ttl=DATA_CACHE_TTL_SECONDS)
 def load_chad_cohorts():
     return _read_parquet(config.CHAD_COHORTS_FILE)
 
-@st.cache_data
+@st.cache_data(ttl=DATA_CACHE_TTL_SECONDS)
 def load_chad_wallets():
     return _read_parquet(config.CHAD_WALLETS_FILE)
 
@@ -665,7 +667,7 @@ def render_coin_age_example_page():
             - Current holdings are at least 90% of peak holdings: ✓
             - Total sold / total bought is less than 20%: ✓
             - **Current balance** is what the wallet still holds at the frozen timestamp.
-            - **Peak balance** is the highest balance this wallet reached in the frozen event history.
+            - **Peak balance** is the wallet's highest recorded balance.
             - **% of peak** is `current balance / peak balance`: `{metrics['current_balance']:,.0f} / {metrics['peak_balance']:,.0f} = {metrics['pct_of_peak']:.1%}`.
             - **Sold / bought** is `total sold / total bought`: `{metrics['total_sold']:,.0f} / {metrics['total_bought']:,.0f} = {metrics['sold_bought']:.1%}`.
             """
@@ -1230,7 +1232,7 @@ st.divider()
 
 # --- Holder growth ---
 st.markdown('<div id="jump-holder-growth" style="scroll-margin-top:5rem"></div>', unsafe_allow_html=True)
-st.subheader("Wallet count (with history)")
+st.subheader("Wallet count history")
 
 GROWTH_BUCKETS = [
     ("count_1m_plus",    "1M+"),
@@ -1326,7 +1328,7 @@ try:
 
     st.divider()
     st.markdown('<div id="jump-holder-distribution-history" style="scroll-margin-top:5rem"></div>', unsafe_allow_html=True)
-    st.subheader("Holder distribution (with history)")
+    st.subheader("Holder distribution history")
 
     window = bdf.sort_values("date")
 
