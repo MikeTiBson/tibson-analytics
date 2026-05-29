@@ -76,6 +76,8 @@ Key files:
 - **Chart legend readability**: increased shared bottom legend label size across charts that use the common Plotly legend helper.
 - **Wallet count structure**: reordered the post-Soulbound sections to show current wallet count first, followed by wallet-count history and holder-distribution history, and added a short explanatory card for what wallet count means.
 - **Holder distribution snapshot**: added a current holder distribution bar chart with an explanatory caption before the holder-distribution history chart.
+- **Explore links**: split holder distribution navigation into separate current snapshot and history links.
+- **Launch price marker**: moved the launch event marker to January 11, 2025 and added a zero-price chart anchor so the label matches the launch date while avoiding an implied exact launch price.
 
 ### 2026-05-25
 

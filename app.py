@@ -769,6 +769,15 @@ try:
 
     price_context = st.radio("Price context", ["Off", "Key events", "Bonus lore"], index=1, horizontal=True, key="price_context")
     p_window = pdf.sort_values("date")
+    launch_anchor_date = pd.Timestamp("2025-01-11")
+    if not p_window.empty and p_window["date"].min() > launch_anchor_date:
+        p_window = pd.concat(
+            [
+                pd.DataFrame([{"date": launch_anchor_date, "price_usd": 0.0}]),
+                p_window,
+            ],
+            ignore_index=True,
+        ).sort_values("date")
 
     latest_price = p_window.iloc[-1]["price_usd"] if not p_window.empty else None
     if latest_price is not None:
@@ -888,7 +897,8 @@ st.markdown(
         <a href="#jump-soulbound-wallets" style="padding:0.42rem 0.7rem; border:1px solid rgba(250,250,250,0.16); border-radius:6px; text-decoration:none">Soulbound wallets</a>
         <a href="#jump-current-wallet-count" style="padding:0.42rem 0.7rem; border:1px solid rgba(250,250,250,0.16); border-radius:6px; text-decoration:none">Current wallet count</a>
         <a href="#jump-holder-growth" style="padding:0.42rem 0.7rem; border:1px solid rgba(250,250,250,0.16); border-radius:6px; text-decoration:none">Wallet count history</a>
-        <a href="#jump-holder-distribution" style="padding:0.42rem 0.7rem; border:1px solid rgba(250,250,250,0.16); border-radius:6px; text-decoration:none">Holder distribution</a>
+        <a href="#jump-current-holder-distribution" style="padding:0.42rem 0.7rem; border:1px solid rgba(250,250,250,0.16); border-radius:6px; text-decoration:none">Current holder distribution</a>
+        <a href="#jump-holder-distribution-history" style="padding:0.42rem 0.7rem; border:1px solid rgba(250,250,250,0.16); border-radius:6px; text-decoration:none">Holder distribution history</a>
       </div>
     </div>
     """,
@@ -1254,7 +1264,7 @@ except Exception as e:
 st.divider()
 
 # --- Holder distribution ---
-st.markdown('<div id="jump-holder-distribution" style="scroll-margin-top:5rem"></div>', unsafe_allow_html=True)
+st.markdown('<div id="jump-current-holder-distribution" style="scroll-margin-top:5rem"></div>', unsafe_allow_html=True)
 st.subheader("Current holder distribution")
 
 try:
@@ -1286,6 +1296,7 @@ try:
     st.caption("Share of current TIBBIR supply held by wallets in each balance bucket.")
 
     st.divider()
+    st.markdown('<div id="jump-holder-distribution-history" style="scroll-margin-top:5rem"></div>', unsafe_allow_html=True)
     st.subheader("Holder distribution (with history)")
 
     window = bdf.sort_values("date")
